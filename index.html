@@ -20,13 +20,9 @@ justify-content:center;
 align-items:center;
 }
 
-.overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.35);
-}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);}
 
-/* FIRST MESSAGE CARD */
+/* CARD */
 .card{
 position:relative;
 z-index:2;
@@ -54,6 +50,7 @@ display:flex;
 gap:30px;
 justify-content:center;
 position:relative;
+height:55px;
 }
 
 button{
@@ -62,10 +59,19 @@ border:none;
 border-radius:12px;
 font-size:18px;
 cursor:pointer;
+position:relative;
 }
 
 #yes{background:#ff4d6d;color:#fff}
-#no{background:#ddd;position:fixed;z-index:5}
+
+/* NO BUTTON — IMPORTANT FIX */
+#no{
+background:#ddd;
+position:absolute;
+left:0;
+top:0;
+transition:left .18s linear, top .18s linear;
+}
 
 /* SLIDE AREA */
 .stage{
@@ -75,17 +81,11 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:3;
+z-index:1;
 pointer-events:none;
 }
 
-.photos{
-display:flex;
-gap:14px;
-align-items:center;
-justify-content:center;
-margin-top:20px;
-}
+.photos{display:flex;gap:14px;margin-top:20px}
 
 .photos img{
 width:42vw;
@@ -93,18 +93,19 @@ max-width:240px;
 border-radius:26px;
 box-shadow:0 10px 25px rgba(0,0,0,.5);
 opacity:0;
+will-change:transform,opacity;
 }
 
-/* sliding */
-.left{transform:translateX(-120vw)}
-.right{transform:translateX(120vw)}
-.showL{animation:slideL 1.2s forwards}
-.showR{animation:slideR 1.2s forwards}
+/* smooth GPU animation */
+.left{transform:translate3d(-120vw,0,0)}
+.right{transform:translate3d(120vw,0,0)}
 
-@keyframes slideL{to{transform:translateX(0);opacity:1}}
-@keyframes slideR{to{transform:translateX(0);opacity:1}}
+.showL{animation:slideL 1.1s cubic-bezier(.25,.8,.25,1) forwards}
+.showR{animation:slideR 1.1s cubic-bezier(.25,.8,.25,1) forwards}
 
-/* LAST MESSAGE UNDER PHOTOS */
+@keyframes slideL{to{transform:translate3d(0,0,0);opacity:1}}
+@keyframes slideR{to{transform:translate3d(0,0,0);opacity:1}}
+
 .final{
 margin-top:18px;
 font-family:'Pacifico',cursive;
@@ -116,9 +117,8 @@ opacity:0;
 width:85%;
 }
 
-.final.show{animation:fade 1s forwards .6s}
+.final.show{animation:fade 1s forwards .5s}
 @keyframes fade{to{opacity:1}}
-
 </style>
 </head>
 
@@ -142,7 +142,7 @@ width:85%;
 </div>
 
 <div class="final" id="finalText">
-Mukku mera baby🦋. i love you so 🥰 🤗🩷much and I miss u so 💐😚  much everyday everytime yaar I hope 🫡 hum mile 👩‍❤️‍💋‍👨🪷🍁 jladi hi kbi
+Mukku mera baby🦋. i love you so 🥰 🤗🩷much and I miss u so 💐😚 much everyday everytime yaar I hope 🫡 hum mile 👩‍❤️‍💋‍👨🪷🍁 jladi hi kbi
 </div>
 </div>
 
@@ -152,63 +152,45 @@ Mukku mera baby🦋. i love you so 🥰 🤗🩷much and I miss u so 💐😚  m
 
 <script>
 const no=document.getElementById('no');
-const btnArea=document.getElementById('btnArea');
+const area=document.getElementById('btnArea');
 
-/* place NO under YES initially */
-function setInitialNoPosition(){
-const rect=btnArea.getBoundingClientRect();
-no.style.left=(rect.left+rect.width/2+40)+"px";
-no.style.top=(rect.top)+"px";
-}
-setTimeout(setInitialNoPosition,200);
-window.addEventListener('resize',setInitialNoPosition);
-
-/* runaway NO button */
+/* keep NO inside button area */
 function moveNo(){
-const margin=10;
-const maxX=window.innerWidth-no.offsetWidth-margin;
-const maxY=window.innerHeight-no.offsetHeight-margin;
+const maxX=area.clientWidth-no.offsetWidth;
+const maxY=area.clientHeight-no.offsetHeight;
+
 const x=Math.random()*maxX;
 const y=Math.random()*maxY;
-no.style.left=x+'px';
-no.style.top=y+'px';
+
+no.style.left=x+"px";
+no.style.top=y+"px";
 }
 
 ['mouseenter','touchstart','pointerdown','click']
-.forEach(e=>no.addEventListener(e,(ev)=>{
-ev.preventDefault();
-moveNo();
-}));
+.forEach(e=>no.addEventListener(e,(ev)=>{ev.preventDefault();moveNo();}));
 
 /* YES CLICK */
 const yes=document.getElementById('yes');
-const start=document.getElementById('start');
 const imgL=document.getElementById('imgL');
 const imgR=document.getElementById('imgR');
 const finalText=document.getElementById('finalText');
 const song=document.getElementById('song');
 
-yes.addEventListener('click',()=>{
-start.style.display='none';
+yes.onclick=()=>{
+yes.style.display='none';
 no.style.display='none';
 
 song.currentTime=0;
 song.play().catch(()=>{});
 
-setTimeout(()=>{
+requestAnimationFrame(()=>{
 imgL.classList.add('showL');
 imgR.classList.add('showR');
-},200);
-
-setTimeout(()=>{
-finalText.classList.add('show');
-},1600);
 });
+
+setTimeout(()=>finalText.classList.add('show'),1500);
+};
 </script>
 
 </body>
 </html>
-
-
-
-
