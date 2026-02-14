@@ -34,6 +34,12 @@ border-radius:20px;
 width:92%;
 max-width:380px;
 color:#fff;
+transition:opacity .4s ease;
+}
+
+.card.hide{
+opacity:0;
+pointer-events:none;
 }
 
 .card h2{
@@ -64,7 +70,6 @@ position:relative;
 
 #yes{background:#ff4d6d;color:#fff}
 
-/* NO BUTTON */
 #no{
 background:#ddd;
 position:absolute;
@@ -96,7 +101,6 @@ opacity:0;
 will-change:transform,opacity;
 }
 
-/* smooth GPU animation */
 .left{transform:translate3d(-120vw,0,0)}
 .right{transform:translate3d(120vw,0,0)}
 
@@ -127,7 +131,7 @@ width:85%;
 <div class="overlay"></div>
 
 <div class="card" id="start">
-<h2 id="firstMsg">hello 👋 Mukku baby. will you be my valentine? 💖</h2>
+<h2>hello 👋 Mukku baby. will you be my valentine? 💖</h2>
 
 <div class="buttons" id="btnArea">
 <button id="yes">Yes 😍</button>
@@ -153,20 +157,22 @@ Mukku mera baby🦋. i love you so 🥰 🤗🩷much and I miss u so 💐😚 mu
 <script>
 const no=document.getElementById('no');
 const area=document.getElementById('btnArea');
-const firstMsg=document.getElementById('firstMsg');
+const start=document.getElementById('start');
 
-/* move NO */
 function moveNo(){
 const maxX=area.clientWidth-no.offsetWidth;
 const maxY=area.clientHeight-no.offsetHeight;
-no.style.left=Math.random()*maxX+"px";
-no.style.top=Math.random()*maxY+"px";
+
+const x=Math.random()*maxX;
+const y=Math.random()*maxY;
+
+no.style.left=x+"px";
+no.style.top=y+"px";
 }
 
 ['mouseenter','touchstart','pointerdown','click']
 .forEach(e=>no.addEventListener(e,(ev)=>{ev.preventDefault();moveNo();}));
 
-/* YES CLICK */
 const yes=document.getElementById('yes');
 const imgL=document.getElementById('imgL');
 const imgR=document.getElementById('imgR');
@@ -174,10 +180,7 @@ const finalText=document.getElementById('finalText');
 const song=document.getElementById('song');
 
 yes.onclick=()=>{
-/* hide buttons + first message */
-yes.style.display='none';
-no.style.display='none';
-firstMsg.style.display='none';
+start.classList.add('hide');   // remove full first message layer
 
 song.currentTime=0;
 song.play().catch(()=>{});
@@ -193,4 +196,3 @@ setTimeout(()=>finalText.classList.add('show'),1500);
 
 </body>
 </html>
-
