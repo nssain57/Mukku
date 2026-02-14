@@ -1,131 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Romantic</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mukku ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box;margin:0;padding:0}
+
 body{
-  margin:0;
-  font-family:"Comic Sans MS", cursive;
-  background:linear-gradient(135deg,#ffe6f0,#ffffff);
-  display:flex;justify-content:center;align-items:center;
-  height:100vh;overflow:hidden;
+height:100vh;
+overflow:hidden;
+font-family:Segoe UI,Arial;
+background:url('1771040369878.png') center/cover no-repeat fixed;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);}
+
+/* CARD */
 .card{
-  width:92%;max-width:420px;text-align:center;position:relative
+position:relative;
+z-index:2;
+text-align:center;
+background:rgba(255,255,255,.18);
+backdrop-filter:blur(8px);
+padding:28px 20px;
+border-radius:20px;
+width:92%;
+max-width:380px;
+color:#fff;
 }
 
-.msg{
-  background:#fff0f6;color:#d63384;
-  padding:14px 18px;border-radius:22px;
-  box-shadow:0 6px 18px rgba(0,0,0,.15);
-  margin:10px 0;font-size:18px
+.card h2{
+margin-bottom:18px;
+font-family:'Pacifico',cursive;
+color:#ffd6e7;
+text-shadow:0 0 8px rgba(255,182,193,.9),0 0 18px rgba(255,105,180,.6);
 }
 
-.buttons{margin-top:8px}
+/* BUTTONS */
+.buttons{
+margin-top:12px;
+display:flex;
+gap:30px;
+justify-content:center;
+position:relative;
+height:55px;
+}
 
 button{
-  border:none;padding:10px 22px;margin:6px;
-  border-radius:20px;font-size:16px;
-  cursor:pointer;background:#ff85a2;color:#fff;
-  box-shadow:0 4px 12px rgba(0,0,0,.2);
-  transition:.2s;
-}
-button:hover{transform:scale(1.05)}
-
-.slider{
-  height:260px;overflow:hidden;border-radius:22px;
-  margin-top:14px;display:none
+padding:12px 24px;
+border:none;
+border-radius:12px;
+font-size:18px;
+cursor:pointer;
+position:relative;
 }
 
-.slides{
-  display:flex;width:400%;height:100%;
-  animation:slide 16s linear forwards
+#yes{background:#ff4d6d;color:#fff}
+
+/* NO BUTTON */
+#no{
+background:#ddd;
+position:absolute;
+left:0;
+top:0;
+transition:left .18s linear, top .18s linear;
 }
 
-.slides img{
-  width:100%;height:100%;
-  object-fit:cover;flex-shrink:0
+/* SLIDE AREA */
+.stage{
+position:fixed;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:1;
+pointer-events:none;
 }
 
-@keyframes slide{
-  0%{transform:translateX(0)}
-  25%{transform:translateX(-100%)}
-  50%{transform:translateX(-200%)}
-  75%{transform:translateX(-300%)}
-  100%{transform:translateX(-300%)}
+.photos{display:flex;gap:14px;margin-top:20px}
+
+.photos img{
+width:42vw;
+max-width:240px;
+border-radius:26px;
+box-shadow:0 10px 25px rgba(0,0,0,.5);
+opacity:0;
+will-change:transform,opacity;
 }
 
-.centerPopup{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  display:none
+/* smooth GPU animation */
+.left{transform:translate3d(-120vw,0,0)}
+.right{transform:translate3d(120vw,0,0)}
+
+.showL{animation:slideL 1.1s cubic-bezier(.25,.8,.25,1) forwards}
+.showR{animation:slideR 1.1s cubic-bezier(.25,.8,.25,1) forwards}
+
+@keyframes slideL{to{transform:translate3d(0,0,0);opacity:1}}
+@keyframes slideR{to{transform:translate3d(0,0,0);opacity:1}}
+
+.final{
+margin-top:18px;
+font-family:'Pacifico',cursive;
+color:#ffd6e7;
+text-shadow:0 0 10px rgba(255,182,193,.9),0 0 25px rgba(255,105,180,.7);
+font-size:20px;
+text-align:center;
+opacity:0;
+width:85%;
 }
+
+.final.show{animation:fade 1s forwards .5s}
+@keyframes fade{to{opacity:1}}
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="overlay"></div>
 
-  <div id="firstMsg" class="msg">
-    Mujhe tumse kuch puchna tha... 💗
-  </div>
+<div class="card" id="start">
+<h2 id="firstMsg">hello 👋 Mukku baby. will you be my valentine? 💖</h2>
 
-  <div id="btns" class="buttons">
-    <button onclick="yesClick()">Yes</button>
-    <button onclick="noClick()">No</button>
-  </div>
-
-  <div class="slider" id="slider">
-    <div class="slides">
-      <img src="photo1.jpg">
-      <img src="photo2.jpg">
-      <img src="photo3.jpg">
-      <img src="photo4.jpg">
-    </div>
-  </div>
-
-  <div id="secondMsg" class="msg" style="display:none">
-    Tum meri special ho ❤️
-  </div>
-
-  <div id="finalMsg" class="msg centerPopup">
-    I love you so much 💖
-  </div>
-
+<div class="buttons" id="btnArea">
+<button id="yes">Yes 😍</button>
+<button id="no">No 😢</button>
+</div>
 </div>
 
+<div class="stage">
+<div class="photos">
+<img src="Picsart_26-02-14_09-15-14-792.jpg" id="imgL" class="left">
+<img src="1771042138892.png" id="imgR" class="right">
+</div>
+
+<div class="final" id="finalText">
+Mukku mera baby🦋. i love you so 🥰 🤗🩷much and I miss u so 💐😚 much everyday everytime yaar I hope 🫡 hum mile 👩‍❤️‍💋‍👨🪷🍁 jladi hi kbi
+</div>
+</div>
+
+<audio id="song" preload="auto">
+<source src="Gallan 4 - Talwiinder.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+const no=document.getElementById('no');
+const area=document.getElementById('btnArea');
+const firstMsg=document.getElementById('firstMsg');
 
-function yesClick(){
-
-  // FIRST MESSAGE + BUTTONS HIDE IMMEDIATELY
-  document.getElementById('firstMsg').style.display='none';
-  document.getElementById('btns').style.display='none';
-
-  // SHOW SLIDER
-  document.getElementById('slider').style.display='block';
-  document.getElementById('secondMsg').style.display='block';
-
-  // FINAL POPUP AFTER SLIDE
-  setTimeout(()=>{
-    document.getElementById('finalMsg').style.display='block';
-  },16000);
+/* move NO */
+function moveNo(){
+const maxX=area.clientWidth-no.offsetWidth;
+const maxY=area.clientHeight-no.offsetHeight;
+no.style.left=Math.random()*maxX+"px";
+no.style.top=Math.random()*maxY+"px";
 }
 
-function noClick(){
-  document.getElementById('firstMsg').style.display='none';
-  document.getElementById('btns').style.display='none';
+['mouseenter','touchstart','pointerdown','click']
+.forEach(e=>no.addEventListener(e,(ev)=>{ev.preventDefault();moveNo();}));
 
-  const msg=document.getElementById('secondMsg');
-  msg.innerText='Thik h... phir bhi tum achi ho 🙂';
-  msg.style.display='block';
-}
+/* YES CLICK */
+const yes=document.getElementById('yes');
+const imgL=document.getElementById('imgL');
+const imgR=document.getElementById('imgR');
+const finalText=document.getElementById('finalText');
+const song=document.getElementById('song');
 
+yes.onclick=()=>{
+/* hide buttons + first message */
+yes.style.display='none';
+no.style.display='none';
+firstMsg.style.display='none';
+
+song.currentTime=0;
+song.play().catch(()=>{});
+
+requestAnimationFrame(()=>{
+imgL.classList.add('showL');
+imgR.classList.add('showR');
+});
+
+setTimeout(()=>finalText.classList.add('show'),1500);
+};
 </script>
 
 </body>
