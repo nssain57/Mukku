@@ -26,6 +26,7 @@ inset:0;
 background:rgba(0,0,0,.35);
 }
 
+/* FIRST MESSAGE CARD */
 .card{
 position:relative;
 z-index:2;
@@ -46,11 +47,13 @@ color:#ffd6e7;
 text-shadow:0 0 8px rgba(255,182,193,.9),0 0 18px rgba(255,105,180,.6);
 }
 
+/* BUTTONS */
 .buttons{
 margin-top:12px;
 display:flex;
-gap:28px;
+gap:30px;
 justify-content:center;
+position:relative;
 }
 
 button{
@@ -64,6 +67,7 @@ cursor:pointer;
 #yes{background:#ff4d6d;color:#fff}
 #no{background:#ddd;position:fixed;z-index:5}
 
+/* SLIDE AREA */
 .stage{
 position:fixed;
 inset:0;
@@ -91,20 +95,18 @@ box-shadow:0 10px 25px rgba(0,0,0,.5);
 opacity:0;
 }
 
+/* sliding */
 .left{transform:translateX(-120vw)}
 .right{transform:translateX(120vw)}
-
 .showL{animation:slideL 1.2s forwards}
 .showR{animation:slideR 1.2s forwards}
 
 @keyframes slideL{to{transform:translateX(0);opacity:1}}
 @keyframes slideR{to{transform:translateX(0);opacity:1}}
 
+/* LAST MESSAGE UNDER PHOTOS */
 .final{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+margin-top:18px;
 font-family:'Pacifico',cursive;
 color:#ffd6e7;
 text-shadow:0 0 10px rgba(255,182,193,.9),0 0 25px rgba(255,105,180,.7);
@@ -116,6 +118,7 @@ width:85%;
 
 .final.show{animation:fade 1s forwards .6s}
 @keyframes fade{to{opacity:1}}
+
 </style>
 </head>
 
@@ -125,12 +128,12 @@ width:85%;
 
 <div class="card" id="start">
 <h2>hello 👋 Mukku baby. will you be my valentine? 💖</h2>
-<div class="buttons">
-<button id="yes">Yes 😍</button>
-</div>
-</div>
 
+<div class="buttons" id="btnArea">
+<button id="yes">Yes 😍</button>
 <button id="no">No 😢</button>
+</div>
+</div>
 
 <div class="stage">
 <div class="photos">
@@ -139,8 +142,7 @@ width:85%;
 </div>
 
 <div class="final" id="finalText">
-Mukku mera baby.i love 😘 💞 you so🙀🥰🤗 much umaaaa 😘😘😘💋. and I miss u so much 😚😘 yaar<br>
-I hope hum milenge jldi hi kbi 🫡💐
+Mukku mera baby🦋. i love you so 🥰 🤗🩷much and I miss u so 💐😚  much everyday everytime yaar I hope 🫡 hum mile 👩‍❤️‍💋‍👨🪷🍁 jladi hi kbi
 </div>
 </div>
 
@@ -150,19 +152,35 @@ I hope hum milenge jldi hi kbi 🫡💐
 
 <script>
 const no=document.getElementById('no');
-function placeRandom(){
-const margin=20;
+const btnArea=document.getElementById('btnArea');
+
+/* place NO under YES initially */
+function setInitialNoPosition(){
+const rect=btnArea.getBoundingClientRect();
+no.style.left=(rect.left+rect.width/2+40)+"px";
+no.style.top=(rect.top)+"px";
+}
+setTimeout(setInitialNoPosition,200);
+window.addEventListener('resize',setInitialNoPosition);
+
+/* runaway NO button */
+function moveNo(){
+const margin=10;
 const maxX=window.innerWidth-no.offsetWidth-margin;
 const maxY=window.innerHeight-no.offsetHeight-margin;
-const x=Math.max(margin,Math.random()*maxX);
-const y=Math.max(margin,Math.random()*maxY);
+const x=Math.random()*maxX;
+const y=Math.random()*maxY;
 no.style.left=x+'px';
 no.style.top=y+'px';
 }
-placeRandom();
-['mouseenter','touchstart','pointerdown','click'].forEach(e=>no.addEventListener(e,(ev)=>{ev.preventDefault();placeRandom()}));
-window.addEventListener('resize',placeRandom);
 
+['mouseenter','touchstart','pointerdown','click']
+.forEach(e=>no.addEventListener(e,(ev)=>{
+ev.preventDefault();
+moveNo();
+}));
+
+/* YES CLICK */
 const yes=document.getElementById('yes');
 const start=document.getElementById('start');
 const imgL=document.getElementById('imgL');
@@ -172,15 +190,25 @@ const song=document.getElementById('song');
 
 yes.addEventListener('click',()=>{
 start.style.display='none';
+no.style.display='none';
+
 song.currentTime=0;
 song.play().catch(()=>{});
-setTimeout(()=>{imgL.classList.add('showL');imgR.classList.add('showR')},200);
-setTimeout(()=>finalText.classList.add('show'),1600);
+
+setTimeout(()=>{
+imgL.classList.add('showL');
+imgR.classList.add('showR');
+},200);
+
+setTimeout(()=>{
+finalText.classList.add('show');
+},1600);
 });
 </script>
 
 </body>
 </html>
+
 
 
 
