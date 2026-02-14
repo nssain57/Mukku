@@ -1,58 +1,133 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Romantic</title>
+
 <style>
-  body{
-    margin:0;
-    font-family:"Comic Sans MS", cursive;
-    background:linear-gradient(135deg,#ffe6f0,#ffffff);
-    display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden;
-  }
-  .card{width:92%;max-width:420px;text-align:center;position:relative}
-  .msg{background:#fff0f6;color:#d63384;padding:14px 18px;border-radius:22px;box-shadow:0 6px 18px rgba(0,0,0,.15);margin:10px 0;font-size:18px}
-  .buttons{margin-top:8px}
-  button{border:none;padding:10px 22px;margin:6px;border-radius:20px;font-size:16px;cursor:pointer;background:#ff85a2;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-  button:hover{transform:scale(1.05)}
-  .slider{height:260px;overflow:hidden;border-radius:22px;margin-top:14px;display:none}
-  .slides{display:flex;width:100%;height:100%;animation:slide 16s linear infinite}
-  .slides img{width:100%;height:100%;object-fit:cover;flex-shrink:0}
-  @keyframes slide{0%{transform:translateX(0)}25%{transform:translateX(-100%)}50%{transform:translateX(-200%)}75%{transform:translateX(-300%)}100%{transform:translateX(0)}}
-  .centerPopup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none}
+body{
+  margin:0;
+  font-family:"Comic Sans MS", cursive;
+  background:linear-gradient(135deg,#ffe6f0,#ffffff);
+  display:flex;justify-content:center;align-items:center;
+  height:100vh;overflow:hidden;
+}
+
+.card{
+  width:92%;max-width:420px;text-align:center;position:relative
+}
+
+.msg{
+  background:#fff0f6;color:#d63384;
+  padding:14px 18px;border-radius:22px;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+  margin:10px 0;font-size:18px
+}
+
+.buttons{margin-top:8px}
+
+button{
+  border:none;padding:10px 22px;margin:6px;
+  border-radius:20px;font-size:16px;
+  cursor:pointer;background:#ff85a2;color:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.2);
+  transition:.2s;
+}
+button:hover{transform:scale(1.05)}
+
+.slider{
+  height:260px;overflow:hidden;border-radius:22px;
+  margin-top:14px;display:none
+}
+
+.slides{
+  display:flex;width:400%;height:100%;
+  animation:slide 16s linear forwards
+}
+
+.slides img{
+  width:100%;height:100%;
+  object-fit:cover;flex-shrink:0
+}
+
+@keyframes slide{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-100%)}
+  50%{transform:translateX(-200%)}
+  75%{transform:translateX(-300%)}
+  100%{transform:translateX(-300%)}
+}
+
+.centerPopup{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  display:none
+}
 </style>
 </head>
+
 <body>
-  <div class="card">
-    <div id="firstMsg" class="msg">Mujhe tumse kuch puchna tha... 💗</div>
-    <div id="btns" class="buttons">
-      <button onclick="yesClick()">Yes</button>
-      <button onclick="noClick()">No</button>
-    </div><div class="slider" id="slider">
-  <div class="slides">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
-    <img src="photo4.jpg">
+
+<div class="card">
+
+  <div id="firstMsg" class="msg">
+    Mujhe tumse kuch puchna tha... 💗
   </div>
+
+  <div id="btns" class="buttons">
+    <button onclick="yesClick()">Yes</button>
+    <button onclick="noClick()">No</button>
+  </div>
+
+  <div class="slider" id="slider">
+    <div class="slides">
+      <img src="photo1.jpg">
+      <img src="photo2.jpg">
+      <img src="photo3.jpg">
+      <img src="photo4.jpg">
+    </div>
+  </div>
+
+  <div id="secondMsg" class="msg" style="display:none">
+    Tum meri special ho ❤️
+  </div>
+
+  <div id="finalMsg" class="msg centerPopup">
+    I love you so much 💖
+  </div>
+
 </div>
 
-<div id="secondMsg" class="msg" style="display:none">Tum meri special ho ❤️</div>
-<div id="finalMsg" class="msg centerPopup">I love you so much 💖</div>
+<script>
 
-  </div><script>
 function yesClick(){
-  document.getElementById('btns').style.display='none';
+
+  // FIRST MESSAGE + BUTTONS HIDE IMMEDIATELY
   document.getElementById('firstMsg').style.display='none';
+  document.getElementById('btns').style.display='none';
+
+  // SHOW SLIDER
   document.getElementById('slider').style.display='block';
   document.getElementById('secondMsg').style.display='block';
-  setTimeout(()=>{document.getElementById('finalMsg').style.display='block'},7000);
+
+  // FINAL POPUP AFTER SLIDE
+  setTimeout(()=>{
+    document.getElementById('finalMsg').style.display='block';
+  },16000);
 }
+
 function noClick(){
-  document.getElementById('btns').style.display='none';
   document.getElementById('firstMsg').style.display='none';
-  document.getElementById('secondMsg').innerText='Thik h... phir bhi tum achi ho 🙂';
-  document.getElementById('secondMsg').style.display='block';
+  document.getElementById('btns').style.display='none';
+
+  const msg=document.getElementById('secondMsg');
+  msg.innerText='Thik h... phir bhi tum achi ho 🙂';
+  msg.style.display='block';
 }
-</script></body>
+
+</script>
+
+</body>
 </html>
+
