@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Mukku ❤️</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 
@@ -18,35 +20,37 @@ justify-content:center;
 align-items:center;
 }
 
-/* dark overlay */
 .overlay{
 position:absolute;
 inset:0;
 background:rgba(0,0,0,.35);
 }
 
-/* first popup card */
 .card{
 position:relative;
 z-index:2;
-color:#fff;
 text-align:center;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(6px);
+background:rgba(255,255,255,.18);
+backdrop-filter:blur(8px);
 padding:28px 20px;
-border-radius:18px;
+border-radius:20px;
 width:92%;
 max-width:380px;
+color:#fff;
 }
 
-h2{margin-bottom:18px}
+.card h2{
+margin-bottom:18px;
+font-family:'Pacifico',cursive;
+color:#ffd6e7;
+text-shadow:0 0 8px rgba(255,182,193,.9),0 0 18px rgba(255,105,180,.6);
+}
 
-/* buttons */
 .buttons{
-display:flex;
-justify-content:center;
-gap:20px;
 margin-top:12px;
+display:flex;
+gap:28px;
+justify-content:center;
 }
 
 button{
@@ -58,15 +62,8 @@ cursor:pointer;
 }
 
 #yes{background:#ff4d6d;color:#fff}
+#no{background:#ddd;position:fixed;z-index:5}
 
-/* NO button floating */
-#no{
-background:#ddd;
-position:fixed;
-z-index:10;
-}
-
-/* stage */
 .stage{
 position:fixed;
 inset:0;
@@ -74,11 +71,10 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-pointer-events:none;
 z-index:3;
+pointer-events:none;
 }
 
-/* images */
 .photos{
 display:flex;
 gap:14px;
@@ -89,31 +85,30 @@ margin-top:20px;
 
 .photos img{
 width:42vw;
-max-width:220px;
-border-radius:18px;
+max-width:240px;
+border-radius:26px;
 box-shadow:0 10px 25px rgba(0,0,0,.5);
 opacity:0;
 }
 
-/* slide start positions */
 .left{transform:translateX(-120vw)}
 .right{transform:translateX(120vw)}
 
-/* animations */
 .showL{animation:slideL 1.2s forwards}
 .showR{animation:slideR 1.2s forwards}
 
 @keyframes slideL{to{transform:translateX(0);opacity:1}}
 @keyframes slideR{to{transform:translateX(0);opacity:1}}
 
-/* final message center */
 .final{
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-color:#fff;
-font-size:18px;
+font-family:'Pacifico',cursive;
+color:#ffd6e7;
+text-shadow:0 0 10px rgba(255,182,193,.9),0 0 25px rgba(255,105,180,.7);
+font-size:20px;
 text-align:center;
 opacity:0;
 width:85%;
@@ -121,7 +116,6 @@ width:85%;
 
 .final.show{animation:fade 1s forwards .6s}
 @keyframes fade{to{opacity:1}}
-
 </style>
 </head>
 
@@ -129,63 +123,46 @@ width:85%;
 
 <div class="overlay"></div>
 
-<!-- FIRST MESSAGE -->
 <div class="card" id="start">
-  <h2>Mukku will you be my valentine? 💖</h2>
-  <div class="buttons">
-    <button id="yes">Yes 😍</button>
-  </div>
+<h2>Mukku will you be my valentine? 💖</h2>
+<div class="buttons">
+<button id="yes">Yes 😍</button>
+</div>
 </div>
 
-<!-- RUNNING NO BUTTON -->
 <button id="no">No 😢</button>
 
-<!-- SLIDE STAGE -->
 <div class="stage">
-  <div class="photos">
-    <img src="Picsart_26-02-14_09-15-14-792.jpg" id="imgL" class="left">
-    <img src="1771042138892.png" id="imgR" class="right">
-  </div>
-
-  <div class="final" id="finalText">
-    Mukku mera baby 🤗 I miss u so much 😚😘<br>
-    I hope hm milenge jldi hi kbi 🫡💐
-  </div>
+<div class="photos">
+<img src="Picsart_26-02-14_09-15-14-792.jpg" id="imgL" class="left">
+<img src="1771042138892.png" id="imgR" class="right">
 </div>
 
-<!-- SONG -->
+<div class="final" id="finalText">
+Mukku mera baby 🤗 I miss u so much 😚😘<br>
+I hope hm milenge jldi hi kbi 🫡💐
+</div>
+</div>
+
 <audio id="song" preload="auto">
-  <source src="Gallan 4 - Talwiinder.mp3" type="audio/mpeg">
+<source src="Gallan 4 - Talwiinder.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-
-/* NO BUTTON ESCAPE */
 const no=document.getElementById('no');
-
-function moveNo(){
- const margin=20;
- const maxX=window.innerWidth-no.offsetWidth-margin;
- const maxY=window.innerHeight-no.offsetHeight-margin;
-
- const x=Math.random()*maxX+margin;
- const y=Math.random()*maxY+margin;
-
- no.style.left=x+'px';
- no.style.top=y+'px';
+function placeRandom(){
+const margin=20;
+const maxX=window.innerWidth-no.offsetWidth-margin;
+const maxY=window.innerHeight-no.offsetHeight-margin;
+const x=Math.max(margin,Math.random()*maxX);
+const y=Math.max(margin,Math.random()*maxY);
+no.style.left=x+'px';
+no.style.top=y+'px';
 }
-moveNo();
+placeRandom();
+['mouseenter','touchstart','pointerdown','click'].forEach(e=>no.addEventListener(e,(ev)=>{ev.preventDefault();placeRandom()}));
+window.addEventListener('resize',placeRandom);
 
-['mouseenter','touchstart','pointerdown','click']
-.forEach(e=>no.addEventListener(e,(ev)=>{
- ev.preventDefault();
- moveNo();
-}));
-
-window.addEventListener('resize',moveNo);
-
-
-/* YES CLICK */
 const yes=document.getElementById('yes');
 const start=document.getElementById('start');
 const imgL=document.getElementById('imgL');
@@ -194,28 +171,15 @@ const finalText=document.getElementById('finalText');
 const song=document.getElementById('song');
 
 yes.addEventListener('click',()=>{
-
 start.style.display='none';
-no.style.display='none';
-
-/* play music */
 song.currentTime=0;
 song.play().catch(()=>{});
-
-/* slide photos */
-setTimeout(()=>{
-imgL.classList.add('showL');
-imgR.classList.add('showR');
-},200);
-
-/* final message */
-setTimeout(()=>{
-finalText.classList.add('show');
-},1700);
-
+setTimeout(()=>{imgL.classList.add('showL');imgR.classList.add('showR')},200);
+setTimeout(()=>finalText.classList.add('show'),1600);
 });
-
 </script>
+
 </body>
 </html>
+
 
